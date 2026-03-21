@@ -5,15 +5,5 @@
     "api/health.js":       { "maxDuration": 10 },
     "api/cron/emails.js":  { "maxDuration": 60 },
     "api/cron/retry.js":   { "maxDuration": 60 }
-  },
-  "crons": [
-    {
-      "path": "/api/cron/emails",
-      "schedule": "*/5 * * * *"
-    },
-    {
-      "path": "/api/cron/retry",
-      "schedule": "0 * * * *"
-    }
-  ]
+  }
 }

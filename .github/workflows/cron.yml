@@ -1,0 +1,30 @@
+name: Cron Jobs
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # every 5 minutes — process email queue
+    - cron: '0 * * * *'     # every hour — retry failed webhooks + cleanup
+  workflow_dispatch:         # allow manual trigger from GitHub Actions UI
+
+jobs:
+  process-emails:
+    name: Process Email Queue
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '*/5 * * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Trigger email cron
+        run: |
+          curl -f -s -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.VERCEL_URL }}/api/cron/emails" | jq .
+
+  retry-webhooks:
+    name: Retry Failed Webhooks
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 * * * *' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Trigger retry cron
+        run: |
+          curl -f -s -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.VERCEL_URL }}/api/cron/retry" | jq .
