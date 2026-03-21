@@ -1,6 +1,19 @@
 {
   "functions": {
-    "api/webhook.js": { "maxDuration": 15 },
-    "api/customer.js": { "maxDuration": 10 }
-  }
+    "api/webhook.js":      { "maxDuration": 30 },
+    "api/customer.js":     { "maxDuration": 10 },
+    "api/health.js":       { "maxDuration": 10 },
+    "api/cron/emails.js":  { "maxDuration": 60 },
+    "api/cron/retry.js":   { "maxDuration": 60 }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/emails",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/retry",
+      "schedule": "0 * * * *"
+    }
+  ]
 }

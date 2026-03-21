@@ -4,16 +4,21 @@
  *
  * Returns cycle count + earned rewards for a given customer.
  * Called client-side from the Bastard Club page.
+ * Edge-cached for 60 seconds to reduce DB load at scale.
  */
 
 const { getCycleCount } = require('../lib/supabase');
 const MILESTONES = require('../milestones');
 
 module.exports = async function handler(req, res) {
-  // CORS — allow requests from your store
+  // CORS — allow requests from the storefront
   res.setHeader('Access-Control-Allow-Origin', 'https://getdirtybastard.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Edge cache — 60 second TTL reduces DB load significantly at scale
+  // Customer sees data that's at most 60s stale, which is acceptable
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -24,19 +29,25 @@ module.exports = async function handler(req, res) {
   }
 
   const customerId = req.query.id;
-  if (!customerId) {
-    return res.status(400).json({ error: 'Missing customer id' });
+  if (!customerId || !/^\d+$/.test(customerId)) {
+    return res.status(400).json({ error: 'Invalid customer id' });
   }
 
   try {
     const data = await getCycleCount(customerId);
 
     if (!data) {
-      // Customer not yet in rewards DB (no subscription charges yet)
+      // Customer not yet in rewards DB — no subscription charges processed yet
       return res.status(200).json({
         found: false,
         cycle_count: 0,
         rewards_earned: [],
+        milestones: MILESTONES.map(m => ({
+          ...m,
+          earned: false,
+          fulfilled: false,
+          progress: 0,
+        })),
         next_milestone: MILESTONES[0],
         cycles_to_next: MILESTONES[0].cycles,
       });
@@ -44,7 +55,6 @@ module.exports = async function handler(req, res) {
 
     const { cycle_count, rewards_earned, rewards_fulfilled } = data;
 
-    // Find next milestone
     const next = MILESTONES.find(m => cycle_count < m.cycles) || null;
     const cyclesToNext = next ? next.cycles - cycle_count : 0;
 
