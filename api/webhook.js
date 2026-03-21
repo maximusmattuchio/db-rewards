@@ -22,6 +22,7 @@ const {
   markProcessed,
 } = require('../lib/supabase');
 const { queueEmail, queueFailedWebhook } = require('../lib/queue');
+const { trackCycleEvent } = require('../lib/email');
 
 const MAX_BODY_SIZE = 1024 * 100; // 100KB hard limit
 
@@ -179,6 +180,11 @@ module.exports = async function handler(req, res) {
     });
 
     console.log(`[webhook] ${shopifyCustomerId} → cycle ${newCount}`);
+
+    // Fire Klaviyo cycle event for nurture flows (non-blocking)
+    const nextMilestone = MILESTONES.find(m => newCount < m.cycles) || null;
+    const cyclesToNext = nextMilestone ? nextMilestone.cycles - newCount : 0;
+    trackCycleEvent(email, shopifyCustomerId, newCount, cyclesToNext, nextMilestone?.name).catch(() => {});
 
     // ── 9. CHECK ALL MILESTONES (handles skipped cycles gracefully) ──────
     for (const milestone of MILESTONES) {

@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
       }
 
       try {
-        await sendRewardEmail(job.email, milestone, job.cycle_count);
+        await sendRewardEmail(job.email, milestone, job.cycle_count, job.shopify_customer_id);
         await markEmailSent(job.id);
 
         await logEvent(job.shopify_customer_id, 'reward_email_sent', {
