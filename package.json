@@ -1,0 +1,9 @@
+{
+  "name": "db-rewards",
+  "version": "1.0.0",
+  "description": "Dirty Bastard — Subscription Rewards Webhook Handler",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.0",
+    "nodemailer": "^8.0.3"
+  }
+}
