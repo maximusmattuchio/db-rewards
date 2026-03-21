@@ -12,7 +12,12 @@ const MILESTONES = require('../milestones');
 module.exports = async function handler(req, res) {
   // CORS — allow requests from your store
   res.setHeader('Access-Control-Allow-Origin', 'https://getdirtybastard.com');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
