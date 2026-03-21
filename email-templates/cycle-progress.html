@@ -14,42 +14,49 @@
 
         <!-- HEADER -->
         <tr>
-          <td style="background:#0D3B23;padding:36px 40px;text-align:center;">
-            <p style="margin:0 0 6px 0;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C4733A;">The Bastard Club</p>
-            <h1 style="margin:0;font-size:30px;font-weight:700;color:#F5EFE6;font-family:Georgia,serif;line-height:1.2;">One More and You're In.</h1>
+          <td style="background:#0D3B23;padding:40px 40px 36px 40px;text-align:center;">
+            <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C4733A;">The Bastard Club</p>
+            <h1 style="margin:0;font-size:34px;font-weight:700;color:#F5EFE6;font-family:Georgia,serif;line-height:1.2;">Don't quit now.</h1>
           </td>
         </tr>
 
-        <!-- BODY -->
+        <!-- BODY COPY -->
         <tr>
-          <td style="padding:44px 40px 0 40px;text-align:center;">
-            <div style="font-size:64px;line-height:1;margin-bottom:20px;">⏳</div>
-            <p style="margin:0 0 16px 0;font-size:16px;color:#4A3C30;line-height:1.8;">
-              {{ person.first_name | default: 'Hey' }} — your next subscription cycle unlocks <strong>{{ event.next_milestone_name }}</strong>.
+          <td style="padding:44px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-size:16px;font-weight:700;color:#0D3B23;line-height:1.5;">
+              {{ person.first_name | default: 'One more' }}. That's it.
             </p>
-            <p style="margin:0;font-size:15px;color:#6B5C4E;line-height:1.8;">
-              You're at <strong>{{ event.cycle_count }} cycles</strong>. One more charge and it's yours. No action needed — just let your subscription run.
+            <p style="margin:0 0 16px 0;font-size:15px;color:#4A3C30;line-height:1.8;">
+              You're at <strong>{{ event.cycle_count }} cycles</strong>. One more charge and your <strong>{{ event.next_milestone_name }}</strong> is yours. No action needed — just let your subscription run.
+            </p>
+            <p style="margin:0;font-size:15px;color:#4A3C30;line-height:1.8;">
+              You've come this far. Don't be that guy who cancels one cycle short.
             </p>
           </td>
         </tr>
 
         <!-- PROGRESS BAR -->
         <tr>
-          <td style="padding:32px 40px 0 40px;">
+          <td style="padding:28px 40px 0 40px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="background:#ffffff;border-radius:12px;padding:20px 24px;">
-                  <p style="margin:0 0 12px 0;font-size:12px;color:#A09080;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Your Progress</p>
-                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <p style="margin:0 0 12px 0;font-size:11px;color:#A09080;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Your Progress</p>
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
                     <tr>
-                      <td style="background:#E8E0D4;border-radius:99px;height:10px;overflow:hidden;">
-                        <td style="background:#C4733A;border-radius:99px;height:10px;width:90%;"></td>
+                      <td style="background:#E8E0D4;border-radius:99px;height:10px;overflow:hidden;padding:0;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td width="92%" style="background:#C4733A;height:10px;border-radius:99px;"></td>
+                            <td></td>
+                          </tr>
+                        </table>
                       </td>
                     </tr>
                   </table>
-                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td style="font-size:12px;color:#A09080;">{{ event.cycle_count }} cycles</td>
+                      <td style="font-size:12px;color:#A09080;">{{ event.cycle_count }} cycles complete</td>
                       <td align="right" style="font-size:12px;font-weight:700;color:#C4733A;">1 away 🔥</td>
                     </tr>
                   </table>
@@ -61,22 +68,22 @@
 
         <!-- CTA -->
         <tr>
-          <td style="padding:32px 40px 0 40px;text-align:center;">
-            <a href="{{ event.rewards_page_url }}" style="display:inline-block;background:#0D3B23;color:#F5EFE6;padding:16px 40px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Your Rewards →</a>
+          <td style="padding:32px 40px 36px 40px;text-align:center;">
+            <a href="{{ event.rewards_page_url }}" style="display:inline-block;background:#C4733A;color:#F5EFE6;padding:16px 40px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Your Rewards →</a>
           </td>
         </tr>
 
         <!-- FOOTER -->
         <tr>
-          <td style="background:#0D3B23;padding:28px 40px;text-align:center;margin-top:40px;">
-            <p style="margin:0 0 8px 0;font-size:12px;color:rgba(245,239,230,0.5);">
+          <td style="background:#0D3B23;padding:28px 40px;text-align:center;">
+            <p style="margin:0 0 6px 0;font-size:12px;color:rgba(245,239,230,0.5);">
               Questions? <a href="mailto:hello@getdirtybastard.com" style="color:#C4733A;text-decoration:none;">hello@getdirtybastard.com</a>
             </p>
-            <p style="margin:0;font-size:11px;color:rgba(245,239,230,0.3);">
+            <p style="margin:0 0 12px 0;font-size:11px;color:rgba(245,239,230,0.3);">
               Dirty Bastard Laundry Co. · <a href="https://getdirtybastard.com" style="color:rgba(245,239,230,0.3);text-decoration:none;">getdirtybastard.com</a>
             </p>
-            <p style="margin:12px 0 0 0;font-size:10px;color:rgba(245,239,230,0.2);">
-              You're receiving this because you're a Bastard Club member. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.2);text-decoration:underline;">Unsubscribe</a>
+            <p style="margin:0;font-size:10px;color:rgba(245,239,230,0.2);">
+              You're receiving this because you give a sheet. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.2);text-decoration:underline;">Unsubscribe</a>
             </p>
           </td>
         </tr>

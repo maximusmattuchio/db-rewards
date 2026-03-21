@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You Earned a Reward — Dirty Bastard</title>
+<title>Holy Sheet. You Earned It. — Dirty Bastard</title>
 </head>
 <body style="margin:0;padding:0;background:#E8E0D4;font-family:Arial,Helvetica,sans-serif;">
 
@@ -14,18 +14,33 @@
 
         <!-- HEADER -->
         <tr>
-          <td style="background:#0D3B23;padding:36px 40px;text-align:center;">
-            <p style="margin:0 0 6px 0;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C4733A;">The Bastard Club</p>
-            <h1 style="margin:0;font-size:30px;font-weight:700;color:#F5EFE6;font-family:Georgia,serif;line-height:1.2;">You Earned It.</h1>
+          <td style="background:#0D3B23;padding:40px 40px 36px 40px;text-align:center;">
+            <p style="margin:0 0 10px 0;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C4733A;">The Bastard Club</p>
+            <h1 style="margin:0;font-size:36px;font-weight:700;color:#F5EFE6;font-family:Georgia,serif;line-height:1.2;">Holy Sheet.</h1>
           </td>
         </tr>
 
-        <!-- HERO REWARD BLOCK -->
+        <!-- HERO -->
         <tr>
           <td style="padding:44px 40px 0 40px;text-align:center;">
-            <div style="font-size:64px;line-height:1;margin-bottom:16px;">{{ event.milestone_emoji }}</div>
-            <h2 style="margin:0 0 8px 0;font-size:24px;font-weight:700;color:#0D3B23;text-transform:uppercase;letter-spacing:1.5px;">{{ event.milestone_name }}</h2>
-            <p style="margin:0;font-size:15px;color:#6B5C4E;line-height:1.6;">{{ event.milestone_description }}</p>
+            <div style="font-size:64px;line-height:1;margin-bottom:20px;">{{ event.milestone_emoji }}</div>
+            <h2 style="margin:0 0 8px 0;font-size:22px;font-weight:700;color:#0D3B23;text-transform:uppercase;letter-spacing:2px;">{{ event.milestone_name }}</h2>
+            <p style="margin:0;font-size:15px;color:#6B5C4E;">{{ event.milestone_description }}</p>
+          </td>
+        </tr>
+
+        <!-- BODY COPY -->
+        <tr>
+          <td style="padding:32px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-size:16px;color:#0D3B23;font-weight:700;line-height:1.5;">
+              {{ person.first_name | default: 'Most guys' }} — most guys cancel after month one.<br>You didn't.
+            </p>
+            <p style="margin:0 0 16px 0;font-size:15px;color:#4A3C30;line-height:1.8;">
+              <strong>{{ event.cycle_count }} subscription cycles.</strong> That's not nothing. That's commitment. And now you're getting paid for it.
+            </p>
+            <p style="margin:0;font-size:15px;color:#4A3C30;line-height:1.8;">
+              Your <strong>{{ event.milestone_name }}</strong> is on its way. We've got the address from your subscription — no action needed on your end. Just keep washing like a bastard.
+            </p>
           </td>
         </tr>
 
@@ -34,31 +49,26 @@
           <td style="padding:28px 40px 0 40px;">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="background:#ffffff;border-radius:12px;padding:20px 24px;border-left:4px solid #C4733A;">
-                  <p style="margin:0 0 4px 0;font-size:11px;color:#A09080;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Milestone Unlocked</p>
-                  <p style="margin:0;font-size:20px;font-weight:700;color:#0D3B23;">{{ event.cycle_count }} Subscription Cycles ✓</p>
+                <td style="background:#0D3B23;border-radius:12px;padding:20px 24px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <p style="margin:0 0 4px 0;font-size:11px;color:#C4733A;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Milestone Unlocked</p>
+                        <p style="margin:0;font-size:18px;font-weight:700;color:#F5EFE6;">{{ event.cycle_count }} Cycles ✓</p>
+                      </td>
+                      <td align="right" style="font-size:32px;">🏆</td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
 
-        <!-- BODY COPY -->
-        <tr>
-          <td style="padding:28px 40px 0 40px;">
-            <p style="margin:0 0 16px 0;font-size:15px;color:#4A3C30;line-height:1.8;">
-              {{ person.first_name | default: 'Hey' }} — you've been a Dirty Bastard subscriber for <strong>{{ event.cycle_count }} cycles</strong>. That's not nothing. That's commitment.
-            </p>
-            <p style="margin:0;font-size:15px;color:#4A3C30;line-height:1.8;">
-              We're sending your reward to the address on your subscription. No action needed — we've got it handled. If anything looks off, just reply to this email.
-            </p>
-          </td>
-        </tr>
-
         <!-- CTA -->
         <tr>
           <td style="padding:32px 40px 0 40px;text-align:center;">
-            <a href="{{ event.rewards_page_url }}" style="display:inline-block;background:#0D3B23;color:#F5EFE6;padding:16px 40px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Your Rewards →</a>
+            <a href="{{ event.rewards_page_url }}" style="display:inline-block;background:#C4733A;color:#F5EFE6;padding:16px 40px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Your Rewards →</a>
           </td>
         </tr>
 
@@ -76,30 +86,29 @@
         <!-- WHAT'S NEXT -->
         <tr>
           <td style="padding:28px 40px 0 40px;">
-            <p style="margin:0 0 16px 0;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C4733A;">What's Next</p>
+            <p style="margin:0 0 4px 0;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C4733A;">Don't Stop Now.</p>
+            <p style="margin:0 0 16px 0;font-size:13px;color:#A09080;">Here's what's coming if you keep washing.</p>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
 
               {% if event.cycle_count < 10 %}
-              <!-- Next: Tee at 10 -->
               <tr>
-                <td style="background:#ffffff;border-radius:12px;padding:16px 20px;margin-bottom:8px;">
+                <td style="background:#ffffff;border-radius:12px;padding:16px 20px;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td width="40" style="font-size:28px;">👕</td>
                       <td style="padding-left:12px;">
                         <p style="margin:0;font-size:14px;font-weight:700;color:#0D3B23;">Free Dirty Bastard Tee</p>
-                        <p style="margin:4px 0 0 0;font-size:12px;color:#A09080;">{{ 10 | minus: event.cycle_count }} more cycles — keep going</p>
+                        <p style="margin:4px 0 0 0;font-size:12px;color:#A09080;">{{ 10 | minus: event.cycle_count }} more cycles. Don't quit.</p>
                       </td>
                       <td align="right" style="font-size:12px;font-weight:700;color:#C4733A;white-space:nowrap;">10 cycles</td>
                     </tr>
                   </table>
                 </td>
               </tr>
+              <tr><td style="height:8px;"></td></tr>
               {% endif %}
 
               {% if event.cycle_count < 20 %}
-              <tr><td style="height:8px;"></td></tr>
-              <!-- Next: Legend Pack at 20 -->
               <tr>
                 <td style="background:#ffffff;border-radius:12px;padding:16px 20px;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -107,7 +116,7 @@
                       <td width="40" style="font-size:28px;">🎁</td>
                       <td style="padding-left:12px;">
                         <p style="margin:0;font-size:14px;font-weight:700;color:#0D3B23;">The Legend Pack</p>
-                        <p style="margin:4px 0 0 0;font-size:12px;color:#A09080;">Tee, hat, mystery gift — {{ 20 | minus: event.cycle_count }} cycles away</p>
+                        <p style="margin:4px 0 0 0;font-size:12px;color:#A09080;">Tee, hat, mystery gift. For the ones who made it.</p>
                       </td>
                       <td align="right" style="font-size:12px;font-weight:700;color:#C4733A;white-space:nowrap;">20 cycles</td>
                     </tr>
@@ -120,17 +129,27 @@
           </td>
         </tr>
 
+        <!-- SIGN OFF -->
+        <tr>
+          <td style="padding:32px 40px 36px 40px;">
+            <p style="margin:0;font-size:14px;color:#4A3C30;line-height:1.8;">
+              Keep washing.<br>
+              <strong style="color:#0D3B23;">— Dirty Bastard</strong>
+            </p>
+          </td>
+        </tr>
+
         <!-- FOOTER -->
         <tr>
-          <td style="background:#0D3B23;padding:28px 40px;text-align:center;margin-top:40px;">
-            <p style="margin:0 0 8px 0;font-size:12px;color:rgba(245,239,230,0.5);">
+          <td style="background:#0D3B23;padding:28px 40px;text-align:center;">
+            <p style="margin:0 0 6px 0;font-size:12px;color:rgba(245,239,230,0.5);">
               Questions? <a href="mailto:hello@getdirtybastard.com" style="color:#C4733A;text-decoration:none;">hello@getdirtybastard.com</a>
             </p>
-            <p style="margin:0;font-size:11px;color:rgba(245,239,230,0.3);">
+            <p style="margin:0 0 12px 0;font-size:11px;color:rgba(245,239,230,0.3);">
               Dirty Bastard Laundry Co. · <a href="https://getdirtybastard.com" style="color:rgba(245,239,230,0.3);text-decoration:none;">getdirtybastard.com</a>
             </p>
-            <p style="margin:12px 0 0 0;font-size:10px;color:rgba(245,239,230,0.2);">
-              You're receiving this because you're a Bastard Club member. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.2);text-decoration:underline;">Unsubscribe</a>
+            <p style="margin:0;font-size:10px;color:rgba(245,239,230,0.2);">
+              You're receiving this because you give a sheet. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.2);text-decoration:underline;">Unsubscribe</a>
             </p>
           </td>
         </tr>
