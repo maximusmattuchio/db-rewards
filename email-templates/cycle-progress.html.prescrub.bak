@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>One Cycle Away - Dirty Bastard</title>
+<title>One Cycle Away — Dirty Bastard</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body style="margin:0;padding:0;background:#E8E0D4;font-family:'Barlow',Arial,sans-serif;">
@@ -14,7 +14,7 @@
 <!--<![endif]-->
 
 <!-- Calculate progress bar percentage dynamically -->
-<!-- Formula: cycle_count / (cycle_count + 1) * 100 - since cycles_to_next = 1 -->
+<!-- Formula: cycle_count / (cycle_count + 1) * 100 — since cycles_to_next = 1 -->
 {% assign next_cycle = event.cycle_count | plus: 1 %}
 {% assign bar_pct = event.cycle_count | times: 100 | divided_by: next_cycle %}
 
@@ -47,7 +47,7 @@
         <tr>
           <td style="padding:44px 40px 0 40px;">
             <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}One more{% endif %}. That's it.</p>
-            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">You're at <strong>{{ event.cycle_count }} cycles</strong>. One more charge and your <strong>{{ event.next_milestone_name }}</strong> is yours. No action needed - just let your subscription run.</p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">You're at <strong>{{ event.cycle_count }} cycles</strong>. One more charge and your <strong>{{ event.next_milestone_name }}</strong> is yours. No action needed — just let your subscription run.</p>
             <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">You've come this far. Don't be that guy who cancels one cycle short.</p>
           </td>
         </tr>
@@ -115,7 +115,7 @@
         <!-- SIGN OFF -->
         <tr>
           <td style="padding:36px 40px 44px 40px;">
-            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">- Dirty Bastard</strong></p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">— Dirty Bastard</strong></p>
           </td>
         </tr>
 

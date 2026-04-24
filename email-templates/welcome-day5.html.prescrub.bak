@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Cycles — Dirty Bastard</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#E8E0D4;font-family:'Barlow',Arial,sans-serif;">
+
+<!--[if !mso]><!-->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">5 cycles. That's the number between you and your first reward.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<!--<![endif]-->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E8E0D4;padding:48px 16px;">
+  <tr>
+    <td align="center">
+      <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;background:#F5EFE6;border-radius:4px;overflow:hidden;box-shadow:0 8px 40px rgba(13,59,35,0.18);">
+
+        <!-- AMBER TOP BAR -->
+        <tr>
+          <td style="background:#C4733A;padding:10px 40px;text-align:center;">
+            <span style="font-family:'Barlow',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#0D3B23;">The Bastard Club</span>
+          </td>
+        </tr>
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background:#0D3B23;padding:48px 40px 40px 40px;text-align:center;">
+            <h1 style="margin:0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:52px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:2px;line-height:1;">5 Cycles.</h1>
+            <p style="margin:12px 0 0 0;font-family:'Barlow',Arial,sans-serif;font-size:16px;color:rgba(245,239,230,0.65);letter-spacing:1px;">That's all that stands between you and your first reward.</p>
+          </td>
+        </tr>
+
+        <!-- AMBER DIVIDER -->
+        <tr>
+          <td style="background:#C4733A;height:3px;font-size:0;">&nbsp;</td>
+        </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td style="padding:44px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}You're{% endif %} — you're one cycle in. Here's the full picture.</p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Most guys who start a subscription cancel in the first 60 days. Not because the product failed them — because they never gave it long enough to become a habit.</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">The guys who stick to 5 cycles don't go back. That's not marketing. That's just what happens when the right product becomes routine.</p>
+          </td>
+        </tr>
+
+        <!-- STAT CARDS -->
+        <tr>
+          <td style="padding:28px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="48%" style="background:#0D3B23;border-radius:4px;padding:20px 18px;text-align:center;vertical-align:top;">
+                  <p style="margin:0 0 6px 0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:36px;font-weight:700;color:#C4733A;line-height:1;">1</p>
+                  <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(245,239,230,0.5);text-transform:uppercase;letter-spacing:2px;">Cycle Done</p>
+                </td>
+                <td width="4%"></td>
+                <td width="48%" style="background:#ffffff;border-radius:4px;padding:20px 18px;text-align:center;vertical-align:top;border:1px solid rgba(196,115,58,0.2);">
+                  <p style="margin:0 0 6px 0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:36px;font-weight:700;color:#0D3B23;line-height:1;">4</p>
+                  <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:11px;color:#A09080;text-transform:uppercase;letter-spacing:2px;">Until Underwear</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- WHAT HAPPENS AT 5 -->
+        <tr>
+          <td style="padding:28px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#0D3B23;border-radius:4px;padding:24px 28px;">
+                  <p style="margin:0 0 4px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:#C4733A;text-transform:uppercase;letter-spacing:3px;font-weight:700;">At Cycle 5</p>
+                  <p style="margin:0 0 12px 0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:22px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:1px;">Free Underwear Ships</p>
+                  <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:rgba(245,239,230,0.6);line-height:1.7;">Dirty Bastard boxer briefs. No code. No coupon. No catch. Just a thank you for not being the guy who cancels after one month.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- THEN WHAT -->
+        <tr>
+          <td style="padding:20px 40px 0 40px;">
+            <p style="margin:0 0 12px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#C4733A;">Then What</p>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#ffffff;border-radius:4px;padding:14px 18px;border-left:3px solid #E8E0D4;margin-bottom:8px;">
+                  <table width="100%">
+                    <tr>
+                      <td style="font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#4A3C30;">👕 <strong>Cycle 10</strong> — Free Dirty Bastard Tee</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td style="height:6px;"></td></tr>
+              <tr>
+                <td style="background:#ffffff;border-radius:4px;padding:14px 18px;border-left:3px solid #E8E0D4;">
+                  <table width="100%">
+                    <tr>
+                      <td style="font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#4A3C30;">🎁 <strong>Cycle 20</strong> — The Legend Pack (tee + hat + mystery gift)</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:36px 40px 0 40px;text-align:center;">
+            <a href="https://getdirtybastard.com/pages/rewards?utm_source=klaviyo&utm_medium=email&utm_campaign=welcome-day5&utm_content=cta" style="display:inline-block;background:#C4733A;color:#0D3B23;padding:16px 44px;border-radius:4px;text-decoration:none;font-family:'Barlow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">See Your Full Progress →</a>
+          </td>
+        </tr>
+
+        <!-- MANAGE NOTE -->
+        <tr>
+          <td style="padding:20px 40px 0 40px;text-align:center;">
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#A09080;line-height:1.7;">
+              Need to skip or adjust your subscription?<br>
+              <a href="https://getdirtybastard.com/tools/recurring/portal?utm_source=klaviyo&utm_medium=email&utm_campaign=welcome-day5&utm_content=manage" style="color:#C4733A;text-decoration:none;font-weight:700;">Manage here →</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- SIGN OFF -->
+        <tr>
+          <td style="padding:36px 40px 44px 40px;">
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">— Dirty Bastard</strong></p>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background:#0A2415;padding:32px 40px;text-align:center;">
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(245,239,230,0.45);">Questions? <a href="mailto:hello@getdirtybastard.com" style="color:#C4733A;text-decoration:none;font-weight:600;">hello@getdirtybastard.com</a></p>
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(245,239,230,0.25);">Dirty Bastard Laundry Co. · <a href="https://getdirtybastard.com?utm_source=klaviyo&utm_medium=email&utm_campaign=welcome-day5" style="color:rgba(245,239,230,0.25);text-decoration:none;">getdirtybastard.com</a></p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">715 W Orient St · Tampa, FL</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">You're receiving this because you give a sheet. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.18);text-decoration:underline;">Unsubscribe</a></p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

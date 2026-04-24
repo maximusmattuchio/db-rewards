@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Last Call — Dirty Bastard</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#E8E0D4;font-family:'Barlow',Arial,sans-serif;">
+
+<!--[if !mso]><!-->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Last chance to claim your {{ event.milestone_name }}. We can't hold this forever.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<!--<![endif]-->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E8E0D4;padding:48px 16px;">
+  <tr>
+    <td align="center">
+      <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;background:#F5EFE6;border-radius:4px;overflow:hidden;box-shadow:0 8px 40px rgba(13,59,35,0.18);">
+
+        <!-- AMBER TOP BAR -->
+        <tr>
+          <td style="background:#C4733A;padding:10px 40px;text-align:center;">
+            <span style="font-family:'Barlow',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#0D3B23;">The Bastard Club</span>
+          </td>
+        </tr>
+
+        <!-- HEADER — red-tinted for urgency -->
+        <tr>
+          <td style="background:#1A0A05;padding:48px 40px 40px 40px;text-align:center;">
+            <h1 style="margin:0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:52px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:2px;line-height:1;">Last Call.</h1>
+            <p style="margin:12px 0 0 0;font-family:'Barlow',Arial,sans-serif;font-size:16px;color:rgba(245,239,230,0.65);letter-spacing:1px;">Your {{ event.milestone_name }} expires soon.</p>
+          </td>
+        </tr>
+
+        <!-- RED DIVIDER -->
+        <tr>
+          <td style="background:#8B2500;height:3px;font-size:0;">&nbsp;</td>
+        </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td style="padding:44px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}Hey{% endif %} — this is the last time we're going to ask.</p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">You earned your <strong style="color:#0D3B23;">{{ event.milestone_name }}</strong> at cycle {{ event.milestone_cycles }}. We've sent two reminders. If you don't claim it, we'll write you off as someone who doesn't want it.</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">We're not saying that to be harsh. We're saying it because we actually want you to have this. You put in the cycles. You deserve the reward. Just click the button.</p>
+          </td>
+        </tr>
+
+        <!-- REWARD CARD -->
+        <tr>
+          <td style="padding:28px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#1A0A05;border-radius:4px;padding:28px;text-align:center;border:1px solid rgba(139,37,0,0.4);">
+                  <p style="margin:0 0 4px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:#C4733A;text-transform:uppercase;letter-spacing:3px;font-weight:700;">⏰ Expires Soon</p>
+                  <p style="margin:0 0 6px 0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:32px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:2px;">{{ event.milestone_name }}</p>
+                  <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:rgba(245,239,230,0.45);">{{ event.milestone_description }}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- URGENCY NOTE -->
+        <tr>
+          <td style="padding:16px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#FFF3EE;border-radius:4px;padding:16px 20px;border-left:3px solid #8B2500;">
+                  <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#4A3C30;line-height:1.6;">
+                    <strong style="color:#8B2500;">This is our final reminder.</strong> After this, your unclaimed reward will be released. We don't want that to happen.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:32px 40px 0 40px;text-align:center;">
+            <a href="https://getdirtybastard.com/pages/rewards?utm_source=klaviyo&utm_medium=email&utm_campaign=milestone-final&utm_content=cta" style="display:inline-block;background:#8B2500;color:#F5EFE6;padding:18px 48px;border-radius:4px;text-decoration:none;font-family:'Barlow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Claim Now Before It's Gone →</a>
+          </td>
+        </tr>
+
+        <!-- SIGN OFF -->
+        <tr>
+          <td style="padding:36px 40px 44px 40px;">
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">— Dirty Bastard</strong></p>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background:#0A2415;padding:32px 40px;text-align:center;">
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(245,239,230,0.45);">Questions? <a href="mailto:hello@getdirtybastard.com" style="color:#C4733A;text-decoration:none;font-weight:600;">hello@getdirtybastard.com</a></p>
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(245,239,230,0.25);">Dirty Bastard Laundry Co. · <a href="https://getdirtybastard.com?utm_source=klaviyo&utm_medium=email&utm_campaign=milestone-final" style="color:rgba(245,239,230,0.25);text-decoration:none;">getdirtybastard.com</a></p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">715 W Orient St · Tampa, FL</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">You're receiving this because you give a sheet. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.18);text-decoration:underline;">Unsubscribe</a></p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

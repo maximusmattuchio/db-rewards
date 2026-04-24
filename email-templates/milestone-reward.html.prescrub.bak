@@ -50,9 +50,9 @@
         <!-- BODY -->
         <tr>
           <td style="padding:44px 40px 0 40px;">
-            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}Most guys{% endif %} - most guys cancel after month one.<br>You didn't.</p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}Most guys{% endif %} — most guys cancel after month one.<br>You didn't.</p>
             <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;"><strong>{{ event.cycle_count }} subscription cycles.</strong> That's not nothing. That's commitment. And now you're getting paid for it.</p>
-            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Your <strong>{{ event.milestone_name }}</strong> is on its way. We've got the address from your subscription - no action needed. Just keep washing like a bastard.</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Your <strong>{{ event.milestone_name }}</strong> is on its way. We've got the address from your subscription — no action needed. Just keep washing like a bastard.</p>
           </td>
         </tr>
 
@@ -100,7 +100,7 @@
             <p style="margin:0 0 20px 0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#A09080;">Here's what's coming if you keep washing.</p>
 
             {% if event.cycle_count >= 20 %}
-            <!-- MAXED OUT - all milestones earned -->
+            <!-- MAXED OUT — all milestones earned -->
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="background:#0D3B23;border-radius:4px;padding:22px 28px;text-align:center;">
@@ -136,10 +136,10 @@
                 <td style="background:#ffffff;border-radius:4px;padding:18px 20px;border-left:3px solid #0D3B23;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td width="44" style="font-size:32px;vertical-align:middle;">🧥</td>
+                      <td width="44" style="font-size:32px;vertical-align:middle;">🎁</td>
                       <td style="padding-left:14px;vertical-align:middle;">
-                        <p style="margin:0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:16px;font-weight:700;color:#0D3B23;text-transform:uppercase;letter-spacing:1px;">The Legend Sweatshirt</p>
-                        <p style="margin:4px 0 0 0;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:#A09080;">Premium DB sweatshirt. {{ 20 | minus: event.cycle_count }} more cycle{% if event.cycle_count == 19 %}{% else %}s{% endif %}.</p>
+                        <p style="margin:0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:16px;font-weight:700;color:#0D3B23;text-transform:uppercase;letter-spacing:1px;">The Legend Pack</p>
+                        <p style="margin:4px 0 0 0;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:#A09080;">Tee, hat, mystery gift. {{ 20 | minus: event.cycle_count }} more cycle{% if event.cycle_count == 19 %}{% else %}s{% endif %}.</p>
                       </td>
                       <td align="right" style="font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:14px;font-weight:700;color:#C4733A;white-space:nowrap;vertical-align:middle;letter-spacing:1px;">20 CYCLES</td>
                     </tr>
@@ -155,7 +155,7 @@
         <!-- SIGN OFF -->
         <tr>
           <td style="padding:36px 40px 44px 40px;">
-            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">- Dirty Bastard</strong></p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">— Dirty Bastard</strong></p>
           </td>
         </tr>
 

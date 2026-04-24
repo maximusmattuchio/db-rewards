@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Still One Away — Dirty Bastard</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#E8E0D4;font-family:'Barlow',Arial,sans-serif;">
+
+<!--[if !mso]><!-->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Still one cycle away. Your {{ event.next_milestone_name }} doesn't claim itself.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<!--<![endif]-->
+
+{% assign next_cycle = event.cycle_count | plus: 1 %}
+{% assign bar_pct = event.cycle_count | times: 100 | divided_by: next_cycle %}
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E8E0D4;padding:48px 16px;">
+  <tr>
+    <td align="center">
+      <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;background:#F5EFE6;border-radius:4px;overflow:hidden;box-shadow:0 8px 40px rgba(13,59,35,0.18);">
+
+        <!-- AMBER TOP BAR -->
+        <tr>
+          <td style="background:#C4733A;padding:10px 40px;text-align:center;">
+            <span style="font-family:'Barlow',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#0D3B23;">The Bastard Club</span>
+          </td>
+        </tr>
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background:#0D3B23;padding:48px 40px 40px 40px;text-align:center;">
+            <h1 style="margin:0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:52px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:2px;line-height:1;">Still Here.<br>Still Waiting.</h1>
+            <p style="margin:12px 0 0 0;font-family:'Barlow',Arial,sans-serif;font-size:16px;color:rgba(245,239,230,0.65);letter-spacing:1px;">One cycle. That's all.</p>
+          </td>
+        </tr>
+
+        <!-- AMBER DIVIDER -->
+        <tr>
+          <td style="background:#C4733A;height:3px;font-size:0;">&nbsp;</td>
+        </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td style="padding:44px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:17px;font-weight:700;color:#0D3B23;line-height:1.5;">{% if person.first_name %}{{ person.first_name }}{% else %}Hey{% endif %}. You've been sitting at {{ event.cycle_count }} cycles for a few days now.</p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">One more charge. That's the only thing between you and your <strong style="color:#0D3B23;">{{ event.next_milestone_name }}</strong>. Your subscription will handle it — you don't have to do anything except not cancel.</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">We've seen guys come this far and bail. Don't be that guy.</p>
+          </td>
+        </tr>
+
+        <!-- PROGRESS BAR -->
+        <tr>
+          <td style="padding:28px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#ffffff;border-radius:4px;padding:20px 24px;">
+                  <p style="margin:0 0 12px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C4733A;">You Are Here</p>
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
+                    <tr>
+                      <td style="background:#E8E0D4;border-radius:99px;height:12px;overflow:hidden;padding:0;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td width="{{ bar_pct }}%" style="background:#C4733A;height:12px;border-radius:99px;"></td>
+                            <td></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-family:'Barlow',Arial,sans-serif;font-size:12px;color:#A09080;">{{ event.cycle_count }} cycles complete</td>
+                      <td align="right" style="font-family:'Barlow',Arial,sans-serif;font-size:13px;font-weight:700;color:#C4733A;letter-spacing:1px;">1 AWAY 🔥</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- REWARD CARD -->
+        <tr>
+          <td style="padding:16px 40px 0 40px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background:#0D3B23;border-radius:4px;padding:22px 28px;">
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td>
+                        <p style="margin:0 0 4px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:#C4733A;text-transform:uppercase;letter-spacing:3px;font-weight:700;">One Cycle Away</p>
+                        <p style="margin:0 0 8px 0;font-family:'Oswald','Impact','Arial Black',Arial,sans-serif;font-size:24px;font-weight:700;color:#F5EFE6;text-transform:uppercase;letter-spacing:1px;">{{ event.next_milestone_name }}</p>
+                        <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:rgba(245,239,230,0.5);">It ships automatically. You just have to stay.</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:32px 40px 0 40px;text-align:center;">
+            <a href="https://getdirtybastard.com/pages/rewards?utm_source=klaviyo&utm_medium=email&utm_campaign=one-away-followup&utm_content=cta" style="display:inline-block;background:#C4733A;color:#0D3B23;padding:16px 44px;border-radius:4px;text-decoration:none;font-family:'Barlow',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">View Your Rewards →</a>
+          </td>
+        </tr>
+
+        <!-- MANAGE -->
+        <tr>
+          <td style="padding:16px 40px 0 40px;text-align:center;">
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:13px;color:#A09080;line-height:1.7;">
+              Need to skip or adjust? Don't cancel — just skip.<br>
+              <a href="https://getdirtybastard.com/tools/recurring/portal?utm_source=klaviyo&utm_medium=email&utm_campaign=one-away-followup&utm_content=manage" style="color:#C4733A;text-decoration:none;font-weight:700;">Manage your subscription →</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- SIGN OFF -->
+        <tr>
+          <td style="padding:36px 40px 44px 40px;">
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:15px;color:#4A3C30;line-height:1.8;">Keep washing.<br><strong style="color:#0D3B23;">— Dirty Bastard</strong></p>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background:#0A2415;padding:32px 40px;text-align:center;">
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(245,239,230,0.45);">Questions? <a href="mailto:hello@getdirtybastard.com" style="color:#C4733A;text-decoration:none;font-weight:600;">hello@getdirtybastard.com</a></p>
+            <p style="margin:0 0 6px 0;font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(245,239,230,0.25);">Dirty Bastard Laundry Co. · <a href="https://getdirtybastard.com?utm_source=klaviyo&utm_medium=email&utm_campaign=one-away-followup" style="color:rgba(245,239,230,0.25);text-decoration:none;">getdirtybastard.com</a></p>
+            <p style="margin:0 0 16px 0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">715 W Orient St · Tampa, FL</p>
+            <p style="margin:0;font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(245,239,230,0.18);">You're receiving this because you give a sheet. <a href="{{ unsubscribe_url }}" style="color:rgba(245,239,230,0.18);text-decoration:underline;">Unsubscribe</a></p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -11,6 +11,7 @@
 
 const { supabase } = require('../../lib/supabase');
 const { getPendingWebhooks, markWebhookResolved, markWebhookDead } = require('../../lib/queue');
+const { sendAdminAlert } = require('../../lib/email');
 
 // Re-process a single failed webhook by calling our own webhook handler logic
 // We import the processor directly to avoid HTTP overhead
@@ -133,6 +134,10 @@ module.exports = async function handler(req, res) {
         if (isDead) {
           results.dead++;
           console.error(`[cron/retry] DEAD: charge ${job.recharge_charge_id} after ${job.attempt_count + 1} attempts`);
+          await sendAdminAlert(
+            `Webhook dead-lettered — charge ${job.recharge_charge_id}`,
+            `A webhook has permanently failed after ${job.attempt_count + 1} retry attempts. A subscription cycle may have been lost.\n\nCharge ID: ${job.recharge_charge_id}\nTopic: ${job.topic}\nLast error: ${err.message}\n\nGo to Supabase → webhook_dlq to inspect and manually process if needed.`
+          ).catch(() => {});
         }
       }
     }

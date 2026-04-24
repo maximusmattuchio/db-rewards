@@ -1,0 +1,13 @@
+{
+  "name": "klaviyo-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP server for Klaviyo API — Dirty Bastard Laundry Co.",
+  "main": "klaviyo-mcp.js",
+  "scripts": {
+    "start": "node klaviyo-mcp.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  }
+}

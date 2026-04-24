@@ -6,6 +6,8 @@
  * Actions: skip | pause | resume | frequency | swap | address | products
  */
 
+const { deleteCustomerRewards, logEvent } = require('../lib/supabase');
+
 const RC_TOKEN  = process.env.RECHARGE_API_TOKEN;
 const RC_BASE   = 'https://api.rechargeapps.com';
 const RC_HEADS  = {
@@ -64,7 +66,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
 
-  const { customerId, action, ...params } = req.body || {};
+  const { customerId, action, subscriptionId: explicitSubId, addressId: explicitAddrId, chargeId: explicitChargeId, ...params } = req.body || {};
 
   if (!customerId || !/^\d+$/.test(String(customerId))) {
     return res.status(400).json({ error: 'Invalid customer id' });
@@ -87,7 +89,19 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true, products });
     }
 
-    const rc = await getRechargeData(String(customerId));
+    // Use explicit IDs from the request if provided (multi-subscription support),
+    // otherwise fall back to looking up the first subscription for this customer.
+    let rc;
+    if (explicitSubId || explicitAddrId || explicitChargeId) {
+      rc = {
+        subscriptionId: explicitSubId   || null,
+        addressId:      explicitAddrId  || null,
+        nextChargeId:   explicitChargeId || null,
+        status:         null,
+      };
+    } else {
+      rc = await getRechargeData(String(customerId));
+    }
 
     if (!rc.subscriptionId && action !== 'address') {
       return res.status(404).json({ error: 'No active subscription found' });
@@ -176,6 +190,26 @@ module.exports = async function handler(req, res) {
           }),
         });
         result = { success: true, message: 'Delivery address updated' };
+        break;
+      }
+
+      case 'cancel': {
+        await rcFetch(`/subscriptions/${rc.subscriptionId}`, {
+          method: 'DELETE',
+        });
+        // Delete rewards data so "permanently deleted" messaging is truthful
+        try {
+          await deleteCustomerRewards(String(customerId));
+          await logEvent(String(customerId), 'subscription_cancelled', {
+            reason: 'customer_request',
+            message: `Subscription ${rc.subscriptionId} cancelled via portal`,
+          });
+        } catch (dbErr) {
+          // Log but don't fail the cancel — ReCharge already cancelled, DB cleanup
+          // will be retried by the subscription/cancelled webhook
+          console.error('[subscription] Supabase cleanup failed:', dbErr.message);
+        }
+        result = { success: true, message: 'Subscription cancelled. Your rewards progress has been removed.' };
         break;
       }
 

@@ -10,7 +10,7 @@
  */
 
 const MILESTONES = require('../../milestones');
-const { sendRewardEmail } = require('../../lib/email');
+const { sendRewardEmail, sendAdminAlert } = require('../../lib/email');
 const { getPendingEmails, markEmailSent, markEmailFailed } = require('../../lib/queue');
 const { logEvent } = require('../../lib/supabase');
 
@@ -70,6 +70,11 @@ module.exports = async function handler(req, res) {
             message: `Email dead-lettered after ${job.attempt_count + 1} attempts: ${err.message}`,
             reward_id: job.reward_id,
           });
+
+          await sendAdminAlert(
+            `Reward email dead-lettered — ${job.email}`,
+            `A reward notification email has permanently failed after ${job.attempt_count + 1} attempts and requires manual action.\n\nCustomer: ${job.email} (Shopify ID: ${job.shopify_customer_id})\nReward: ${milestone.name} (${milestone.id})\nLast error: ${err.message}\n\nGo to Supabase → queued_emails to inspect. You may need to manually contact this customer at hello@getdirtybastard.com.`
+          ).catch(() => {});
         } else {
           results.failed++;
         }

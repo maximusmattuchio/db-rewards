@@ -2,8 +2,9 @@
  * Customer Rewards Read Endpoint
  * GET /api/customer?id=SHOPIFY_CUSTOMER_ID
  *
- * Returns cycle count + earned rewards (Supabase) + live subscription
- * status (ReCharge API) for a given customer.
+ * Returns cycle count + earned rewards (Supabase) + all subscriptions
+ * (ReCharge API) for a given customer. Supports multiple subscriptions
+ * per account (e.g. a parent managing two kids' subscriptions).
  */
 
 const { getCycleCount } = require('../lib/supabase');
@@ -16,77 +17,87 @@ const RC_HEADERS = {
   'Accept': 'application/json',
 };
 
-// Fetch live subscription data from ReCharge by Shopify customer ID
-async function getRechargeSubscription(shopifyCustomerId) {
-  if (!RC_TOKEN) return null;
+async function rcGet(path) {
+  const res = await fetch(`${RC_BASE}${path}`, {
+    headers: RC_HEADERS,
+    signal: AbortSignal.timeout(6000),
+  });
+  if (!res.ok) return {};
+  return res.json().catch(() => ({}));
+}
+
+async function getRechargeSubscriptions(shopifyCustomerId) {
+  if (!RC_TOKEN) return [];
 
   try {
-    // 1. Look up ReCharge customer by Shopify customer ID
-    const custRes = await fetch(
-      `${RC_BASE}/customers?shopify_customer_id=${shopifyCustomerId}`,
-      { headers: RC_HEADERS, signal: AbortSignal.timeout(5000) }
-    );
-    if (!custRes.ok) return null;
-
-    const custData = await custRes.json();
+    // 1. Look up ReCharge customer
+    const custData = await rcGet(`/customers?shopify_customer_id=${shopifyCustomerId}`);
     const rcCustomer = (custData.customers || [])[0];
-    if (!rcCustomer) return null;
+    if (!rcCustomer) return [];
 
     const rcCustomerId = rcCustomer.id;
 
-    // 2. Fetch active subscriptions for this customer (run in parallel with next charge)
-    const [subRes, chargeRes] = await Promise.all([
-      fetch(`${RC_BASE}/subscriptions?customer_id=${rcCustomerId}&status=active`, {
-        headers: RC_HEADERS,
-        signal: AbortSignal.timeout(5000),
-      }),
-      fetch(`${RC_BASE}/charges?customer_id=${rcCustomerId}&status=queued&limit=1`, {
-        headers: RC_HEADERS,
-        signal: AbortSignal.timeout(5000),
-      }),
+    // 2. Fetch active subs, all queued charges, and all addresses in parallel
+    const [activeData, chargeData, addrData] = await Promise.all([
+      rcGet(`/subscriptions?customer_id=${rcCustomerId}&status=active`),
+      rcGet(`/charges?customer_id=${rcCustomerId}&status=queued`),
+      rcGet(`/addresses?customer_id=${rcCustomerId}`),
     ]);
 
-    const subData   = subRes.ok   ? await subRes.json()    : {};
-    const chargeData = chargeRes.ok ? await chargeRes.json() : {};
+    let subs = activeData.subscriptions || [];
 
-    const subscription = (subData.subscriptions || [])[0];
-    const nextCharge   = (chargeData.charges || [])[0];
-
-    if (!subscription && !nextCharge) {
-      // Check for paused subscriptions
-      const pausedRes = await fetch(
-        `${RC_BASE}/subscriptions?customer_id=${rcCustomerId}&status=paused`,
-        { headers: RC_HEADERS, signal: AbortSignal.timeout(5000) }
-      );
-      const pausedData = pausedRes.ok ? await pausedRes.json() : {};
-      const paused = (pausedData.subscriptions || [])[0];
-      if (paused) {
-        return {
-          subscription_status: 'paused',
-          product_title: paused.product_title || null,
-          frequency: paused.order_interval_frequency
-            ? `${paused.order_interval_frequency} ${paused.order_interval_unit}`
-            : null,
-          next_charge_date: null,
-          shipping_address: rcCustomer.shipping_address || null,
-        };
-      }
-      return { subscription_status: null };
+    // Fall back to paused if no active
+    if (subs.length === 0) {
+      const pausedData = await rcGet(`/subscriptions?customer_id=${rcCustomerId}&status=paused`);
+      subs = pausedData.subscriptions || [];
     }
 
-    return {
-      subscription_status: subscription ? 'active' : null,
-      product_title: subscription ? subscription.product_title : null,
-      frequency: subscription
-        ? `${subscription.order_interval_frequency} ${subscription.order_interval_unit}`
-        : null,
-      next_charge_date: nextCharge ? nextCharge.scheduled_at : null,
-      shipping_address: rcCustomer.shipping_address || null,
-    };
+    if (subs.length === 0) return [];
+
+    const charges   = chargeData.charges || [];
+    const addresses = addrData.addresses || [];
+
+    // Build a map of addressId → address object
+    const addrMap = {};
+    addresses.forEach(a => { addrMap[a.id] = a; });
+
+    // Map each subscription to its next charge and address
+    return subs.map(sub => {
+      // Find the queued charge that contains this subscription's line item
+      const nextCharge = charges.find(c =>
+        (c.line_items || []).some(li => li.subscription_id === sub.id)
+      ) || null;
+
+      const addr = addrMap[sub.address_id] || null;
+
+      return {
+        id:               sub.id,
+        status:           sub.status,
+        product_title:    sub.product_title || null,
+        variant_title:    sub.variant_title || null,
+        frequency:        sub.order_interval_frequency
+                            ? `${sub.order_interval_frequency} ${sub.order_interval_unit}`
+                            : null,
+        address_id:       sub.address_id || null,
+        next_charge_id:   nextCharge ? nextCharge.id : null,
+        next_charge_date: nextCharge ? nextCharge.scheduled_at : null,
+        shipping_address: addr ? {
+          first_name: addr.first_name,
+          last_name:  addr.last_name,
+          address1:   addr.address1,
+          address2:   addr.address2,
+          city:       addr.city,
+          province:   addr.province,
+          zip:        addr.zip,
+          country:    addr.country,
+          phone:      addr.phone,
+        } : null,
+      };
+    });
 
   } catch (err) {
     console.error('[customer] ReCharge fetch error:', err.message);
-    return null; // Non-fatal — rewards data still returns
+    return { subs: [], error: true };
   }
 }
 
@@ -107,11 +118,13 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Fetch Supabase rewards + ReCharge subscription in parallel
-    const [rewardsData, rcData] = await Promise.all([
+    const [rewardsData, rcResult] = await Promise.all([
       getCycleCount(customerId),
-      getRechargeSubscription(customerId),
+      getRechargeSubscriptions(customerId),
     ]);
+
+    const subscriptions      = Array.isArray(rcResult) ? rcResult : (rcResult?.subs || []);
+    const subscriptions_error = !Array.isArray(rcResult) && rcResult?.error === true;
 
     const cycle_count       = rewardsData?.cycle_count || 0;
     const rewards_earned    = rewardsData?.rewards_earned || [];
@@ -131,15 +144,10 @@ module.exports = async function handler(req, res) {
         fulfilled: rewards_fulfilled.includes(m.id),
         progress:  Math.min(cycle_count, m.cycles),
       })),
-      next_milestone:  next,
-      cycles_to_next:  cyclesToNext,
-
-      // ReCharge live data (null fields if no subscription / API unavailable)
-      subscription_status: rcData?.subscription_status || null,
-      product_title:       rcData?.product_title || null,
-      frequency:           rcData?.frequency || null,
-      next_charge_date:    rcData?.next_charge_date || null,
-      shipping_address:    rcData?.shipping_address || null,
+      next_milestone: next,
+      cycles_to_next: cyclesToNext,
+      subscriptions,
+      subscriptions_error,
     });
 
   } catch (err) {

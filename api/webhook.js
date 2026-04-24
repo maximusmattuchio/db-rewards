@@ -17,6 +17,7 @@ const {
   getOrCreateCustomer,
   incrementCycles,
   markRewardEarned,
+  deleteCustomerRewards,
   logEvent,
   isProcessed,
   markProcessed,
@@ -126,7 +127,7 @@ module.exports = async function handler(req, res) {
   }
 
   // ── 3. FILTER TOPICS ─────────────────────────────────────────────────────
-  if (topic !== 'charge/paid') {
+  if (topic !== 'charge/paid' && topic !== 'subscription/cancelled') {
     return res.status(200).json({ status: 'ignored', topic });
   }
 
@@ -136,6 +137,54 @@ module.exports = async function handler(req, res) {
     payload = JSON.parse(rawBody);
   } catch {
     return res.status(400).json({ error: 'Invalid JSON' });
+  }
+
+  // ── 4b. SUBSCRIPTION CANCELLED ───────────────────────────────────────────
+  if (topic === 'subscription/cancelled') {
+    const sub = payload.subscription || payload;
+    const sid = String(sub.id || '');
+
+    // ReCharge subscription payloads often omit shopify_customer_id — fall back
+    // to a customer lookup using the ReCharge customer_id that is always present
+    let cancelledCustomerId = sub.shopify_customer_id || sub.customer?.shopify_customer_id;
+
+    if (!cancelledCustomerId || !/^\d+$/.test(String(cancelledCustomerId))) {
+      const rcCustomerId = sub.customer_id || sub.customer?.id;
+      if (rcCustomerId && process.env.RECHARGE_API_TOKEN) {
+        try {
+          const lookupRes = await fetch(
+            `https://api.rechargeapps.com/customers/${rcCustomerId}`,
+            { headers: { 'X-Recharge-Access-Token': process.env.RECHARGE_API_TOKEN, 'Accept': 'application/json' }, signal: AbortSignal.timeout(6000) }
+          );
+          const lookupBody = await lookupRes.json().catch(() => ({}));
+          cancelledCustomerId = lookupBody.customer?.shopify_customer_id;
+        } catch (lookupErr) {
+          console.error('[webhook] Customer lookup failed:', lookupErr.message);
+        }
+      }
+    }
+
+    if (!cancelledCustomerId || !/^\d+$/.test(String(cancelledCustomerId))) {
+      console.error('[webhook] subscription/cancelled: could not resolve shopify_customer_id');
+      return res.status(200).json({ status: 'ignored', reason: 'no_shopify_customer_id' });
+    }
+
+    const cid = String(cancelledCustomerId);
+    try {
+      await deleteCustomerRewards(cid);
+      await logEvent(cid, 'subscription_cancelled', {
+        reason: 'recharge_webhook',
+        message: `Subscription ${sid} cancelled`,
+      });
+      console.log(`[webhook] Rewards deleted for customer ${cid} (sub ${sid})`);
+    } catch (err) {
+      console.error(`[webhook] Failed to delete rewards for ${cid}:`, err.message);
+      await logEvent(cid, 'error', { error: err.message, message: 'cancel_cleanup_failed' }).catch(() => {});
+      // Write to DLQ so this is retried — same safety net as charge/paid failures
+      await queueFailedWebhook(null, rawBody, topic, err.message);
+      return res.status(500).json({ error: 'Cleanup failed', message: err.message });
+    }
+    return res.status(200).json({ status: 'ok', customer_id: cid });
   }
 
   const charge = payload.charge || payload;
