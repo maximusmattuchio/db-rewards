@@ -59,10 +59,32 @@ function main() {
     process.exit(1);
   }
 
-  const lines = fs.readFileSync(DEST, 'utf8').split(/\r?\n/).filter(Boolean);
+  // Numbers strips leading zeros from numeric-looking cells (so "0182" becomes
+  // "182"). Pad codes back to 4 digits before the file is consumed downstream.
+  const raw = fs.readFileSync(DEST, 'utf8');
+  const lines = raw.split(/\r?\n/);
+  const headerCells = lines[0].split(',');
+  const codeIdx = headerCells.findIndex((c) => c.trim() === 'code');
+  let padded = 0;
+  if (codeIdx >= 0) {
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i]) continue;
+      const cells = lines[i].split(',');
+      const before = cells[codeIdx] || '';
+      if (/^\d{1,3}$/.test(before)) {
+        cells[codeIdx] = before.padStart(4, '0');
+        lines[i] = cells.join(',');
+        padded++;
+      }
+    }
+    if (padded > 0) fs.writeFileSync(DEST, lines.join('\n'));
+  }
+
+  const dataLines = lines.filter(Boolean);
   console.log(`✓ Exported ${args.source}`);
   console.log(`            → ${DEST}`);
-  console.log(`✓ ${lines.length - 1} rows`);
+  console.log(`✓ ${dataLines.length - 1} rows`);
+  if (padded > 0) console.log(`✓ Re-padded ${padded} code(s) that lost leading zeros in Numbers`);
   console.log(`\nNext: \`npm run generate-labels\` to rebuild the PDF, or \`npm run seed\` to push to Supabase.`);
 }
 
