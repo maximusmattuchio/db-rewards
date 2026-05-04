@@ -84,6 +84,13 @@ function parseAmount(raw) {
   return Number.isFinite(v) ? v : NaN;
 }
 
+// Capitalize first letter of each word, lowercase the rest.
+// Imperfect for compound names like "McDonald" / "DeLeire" — manually fix
+// those in data/codes.csv after running.
+function titleCase(s) {
+  return String(s).toLowerCase().replace(/\b\p{L}+/gu, (w) => w[0].toUpperCase() + w.slice(1));
+}
+
 const ALPHABET = '0123456789';
 function makeCode() {
   const bytes = crypto.randomBytes(4);
@@ -146,7 +153,7 @@ async function main() {
     if (!Number.isFinite(amt)) continue;
     if (amt < args.min || amt > args.max) continue;
 
-    const name = (row[colName] || '').trim();
+    const name = titleCase((row[colName] || '').trim());
     const email = (row[colEmail] || '').trim().toLowerCase();
     if (!name) continue;
     if (email && matchedEmails.has(email)) continue; // already matched

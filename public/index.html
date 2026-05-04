@@ -299,10 +299,16 @@
         errEl.textContent = '';
       });
 
-      function firstName(full) {
+      // Default: first name only. Show the full name when it contains one of
+      // these tokens (couple/family/title cases): "Aunty", "Uncle", "Family",
+      // "&", "Ms."
+      function displayName(full) {
         if (!full) return 'friend';
-        const parts = String(full).trim().split(/\s+/);
-        return parts[0] || 'friend';
+        const trimmed = String(full).trim();
+        const lower = trimmed.toLowerCase();
+        const KEEP_FULL = ['aunty', 'uncle', 'family', '&', 'ms.'];
+        if (KEEP_FULL.some((t) => lower.indexOf(t) !== -1)) return trimmed;
+        return trimmed.split(/\s+/)[0] || 'friend';
       }
 
       function showError(msg) {
@@ -345,7 +351,8 @@
             return;
           }
 
-          greet.textContent = "What's up, " + firstName(data.backer_name) + ".";
+          const who = displayName(data.backer_name).replace(/\.+$/, '');
+          greet.textContent = "What's up, " + who + ".";
           video.src = data.loom_embed_url;
 
           entryView.classList.add('hidden');

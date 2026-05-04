@@ -82,9 +82,17 @@ function readCodes() {
   });
 }
 
-function firstName(full) {
+// Default: first name only.
+// Use the full name if it contains one of these tokens (couple/family/title cases):
+//   "Aunty", "Uncle", "Family", "&", "Ms."
+const KEEP_FULL_TOKENS = ['aunty', 'uncle', 'family', '&', 'ms.'];
+
+function displayName(full) {
   if (!full) return 'friend';
-  return full.trim().split(/\s+/)[0];
+  const trimmed = full.trim();
+  const lower = trimmed.toLowerCase();
+  if (KEEP_FULL_TOKENS.some((t) => lower.includes(t))) return trimmed;
+  return trimmed.split(/\s+/)[0];
 }
 
 async function makeQrPng(code) {
@@ -150,7 +158,7 @@ async function main() {
     y += 14;
 
     // ── Personalized greeting ────────────────────────────────────────
-    const name = firstName(row.backer_name);
+    const name = displayName(row.backer_name);
     doc.fillColor(INK).font('Helvetica-Bold').fontSize(16)
       .text(`${name},`, padX, y, { width: PAGE_W - padX * 2 });
     y = doc.y + 4;
