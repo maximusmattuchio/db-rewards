@@ -5,8 +5,10 @@
   "scripts": {
     "generate-codes": "node scripts/generate-codes.js",
     "match-backers": "node scripts/match-backers.js",
+    "sync-codes": "node scripts/sync-codes.js",
     "generate-labels": "node scripts/generate-labels.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "sync": "node scripts/sync-codes.js && node scripts/generate-labels.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
