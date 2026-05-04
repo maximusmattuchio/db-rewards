@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0D3B23" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Holy Sheet. You Made It. — Dirty Bastard</title>
+  <meta property="og:title" content="Holy Sheet. You Made It." />
+  <meta property="og:description" content="Backers only. Drop your code to unlock the video." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Barlow:wght@400;500;600&display=swap" />
+
+  <style>
+    :root {
+      --green: #0D3B23;
+      --amber: #C4733A;
+      --amber-hover: #A95E29;
+      --cream: #F5EFE6;
+      --offwhite: #F0EBE0;
+      --ink: #0D3B23;
+      --ink-soft: rgba(13, 59, 35, 0.65);
+      --error: #8B2B1E;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Barlow', system-ui, -apple-system, Segoe UI, sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(28px, 8vw, 64px) 22px clamp(40px, 8vw, 80px);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-bottom: clamp(40px, 12vw, 80px);
+    }
+
+    h1 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.005em;
+      line-height: 0.92;
+      font-size: clamp(46px, 13vw, 92px);
+      margin: 0 0 clamp(16px, 4vw, 24px);
+      color: var(--green);
+    }
+
+    h1 .l2 { display: block; }
+
+    .lede {
+      font-size: clamp(17px, 4.4vw, 20px);
+      line-height: 1.45;
+      color: var(--ink-soft);
+      max-width: 36ch;
+      margin: 0 0 clamp(32px, 8vw, 48px);
+    }
+
+    form { display: contents; }
+
+    label.field {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      background: var(--offwhite);
+      border: 2px solid var(--green);
+      border-radius: 10px;
+      padding: 22px 20px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 7vw, 36px);
+      letter-spacing: 0.5em;
+      text-align: center;
+      color: var(--green);
+      caret-color: var(--amber);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    input[type="text"]::placeholder {
+      color: rgba(13, 59, 35, 0.28);
+      letter-spacing: 0.5em;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: #fff;
+    }
+    input[type="text"]:disabled {
+      opacity: 0.5;
+    }
+
+    .err {
+      color: var(--error);
+      font-weight: 500;
+      margin: 14px 2px 0;
+      font-size: 15px;
+      min-height: 22px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 22px;
+      padding: 20px 24px;
+      background: var(--amber);
+      color: #fff;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 17px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+    .btn:hover { background: var(--amber-hover); }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .footer-note {
+      margin-top: auto;
+      padding-top: 48px;
+      font-size: 13px;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── unlocked view ─────────────────────────────────────────────── */
+    .greet {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.005em;
+      line-height: 0.95;
+      font-size: clamp(40px, 11vw, 76px);
+      margin: 0 0 clamp(24px, 6vw, 36px);
+      color: var(--green);
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(13, 59, 35, 0.18);
+      margin-bottom: clamp(28px, 7vw, 40px);
+    }
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .thanks {
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      text-align: center;
+      max-width: 38ch;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { animation: fade 0.4s ease-out both; }
+      @keyframes fade {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">Dirty Bastard · Backers Only</div>
+
+    <!-- ENTRY VIEW ─────────────────────────────────────────────────── -->
+    <section id="entry-view" class="fade-in">
+      <h1>
+        Holy Sheet.
+        <span class="l2">You Made It.</span>
+      </h1>
+      <p class="lede">Drop the 4-digit code from your insert. We've got something for you.</p>
+
+      <form id="redeem-form" novalidate>
+        <label class="field" for="code">Your code</label>
+        <input
+          id="code"
+          name="code"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="4"
+          autocomplete="one-time-code"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          placeholder="0000"
+          required
+          aria-describedby="code-error"
+        />
+        <div id="code-error" class="err" role="alert" aria-live="polite"></div>
+        <button id="submit-btn" class="btn" type="submit">Unlock my video</button>
+      </form>
+
+      <div class="footer-note">Questions? hello@getdirtybastard.com</div>
+    </section>
+
+    <!-- UNLOCKED VIEW ──────────────────────────────────────────────── -->
+    <section id="unlocked-view" class="hidden">
+      <h2 class="greet" id="greet">What's up.</h2>
+      <div class="video-frame">
+        <iframe
+          id="video"
+          src="about:blank"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          title="Personal thank-you video"
+        ></iframe>
+      </div>
+      <a id="review-cta" class="btn" href="https://getdirtybastard.com/pages/leave-a-review" target="_blank" rel="noopener">
+        Leave us a review
+      </a>
+      <p class="thanks">Reviews are the lifeblood of small brands. Thirty seconds from you = a real difference for us.</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById('redeem-form');
+      const codeInput = document.getElementById('code');
+      const errEl = document.getElementById('code-error');
+      const submitBtn = document.getElementById('submit-btn');
+      const entryView = document.getElementById('entry-view');
+      const unlockedView = document.getElementById('unlocked-view');
+      const greet = document.getElementById('greet');
+      const video = document.getElementById('video');
+
+      // Force numeric input only
+      codeInput.addEventListener('input', () => {
+        const cleaned = codeInput.value.replace(/\D/g, '').slice(0, 4);
+        if (cleaned !== codeInput.value) codeInput.value = cleaned;
+        errEl.textContent = '';
+      });
+
+      function firstName(full) {
+        if (!full) return 'friend';
+        const parts = String(full).trim().split(/\s+/);
+        return parts[0] || 'friend';
+      }
+
+      function showError(msg) {
+        errEl.textContent = msg;
+        submitBtn.disabled = false;
+        codeInput.disabled = false;
+        submitBtn.textContent = 'Unlock my video';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errEl.textContent = '';
+
+        const code = codeInput.value.trim();
+        if (!/^\d{4}$/.test(code)) {
+          showError('Enter all 4 digits.');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        codeInput.disabled = true;
+        submitBtn.textContent = 'Unlocking…';
+
+        try {
+          const res = await fetch('/api/redeem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code }),
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            showError(data.error || 'Something went wrong. Try again.');
+            return;
+          }
+
+          if (!data.loom_embed_url) {
+            showError('Video unavailable. Email hello@getdirtybastard.com.');
+            return;
+          }
+
+          greet.textContent = "What's up, " + firstName(data.backer_name) + ".";
+          video.src = data.loom_embed_url;
+
+          entryView.classList.add('hidden');
+          unlockedView.classList.remove('hidden');
+          unlockedView.classList.add('fade-in');
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        } catch (err) {
+          showError('Network error. Check your connection and try again.');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

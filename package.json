@@ -2,10 +2,17 @@
   "name": "db-rewards",
   "version": "1.0.0",
   "description": "Dirty Bastard — Subscription Rewards Webhook Handler",
+  "scripts": {
+    "generate-codes": "node scripts/generate-codes.js",
+    "seed": "node scripts/seed.js"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@supabase/supabase-js": "^2.43.0",
     "nodemailer": "^8.0.3",
     "resend": "^6.9.4"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2"
   }
 }
