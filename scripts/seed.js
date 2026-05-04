@@ -8,19 +8,24 @@
  * Usage:  node scripts/seed.js
  */
 
-require('dotenv').config({ path: '.env.local' });
-require('dotenv').config(); // fall back to .env
+// Load env in order of increasing authority. .env.local wins because Vercel
+// marks secrets like SUPABASE_KEY as "sensitive" and `vercel pull` returns
+// empty strings for those — so the developer keeps real values locally.
+require('dotenv').config({ path: '.vercel/.env.production.local' });
+require('dotenv').config({ path: '.env' });
+require('dotenv').config({ path: '.env.local', override: true });
 
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const { toLoomEmbed } = require('../lib/loom');
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY;
+const SUPABASE_URL = (process.env.SUPABASE_URL || '').trim();
+const SUPABASE_KEY = (process.env.SUPABASE_KEY || '').trim();
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Missing SUPABASE_URL or SUPABASE_KEY. Add them to .env.local.');
+  console.error('Missing SUPABASE_URL or SUPABASE_KEY.');
+  console.error('Run `vercel pull --environment=production` to sync secrets, or add them to .env.local.');
   process.exit(1);
 }
 
