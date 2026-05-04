@@ -224,10 +224,10 @@
         Holy Sheet.
         <span class="l2">You Made It.</span>
       </h1>
-      <p class="lede">Drop the 4-digit code from your insert. We've got something for you.</p>
+      <p class="lede">Drop the 4-digit pin from your insert. We've got something for you.</p>
 
       <form id="redeem-form" novalidate>
-        <label class="field" for="code">Your code</label>
+        <label class="field" for="code">4-digit pin</label>
         <input
           id="code"
           name="code"
@@ -281,6 +281,17 @@
       const greet = document.getElementById('greet');
       const video = document.getElementById('video');
 
+      // Auto-fill from ?code=XXXX URL param (set by the QR on each insert)
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const fromUrl = (params.get('code') || '').replace(/\D/g, '').slice(0, 4);
+        if (fromUrl.length === 4) {
+          codeInput.value = fromUrl;
+          // Auto-submit so the backer doesn't have to tap anything after scanning
+          requestAnimationFrame(() => form.requestSubmit());
+        }
+      } catch (_) { /* old browser, ignore */ }
+
       // Force numeric input only
       codeInput.addEventListener('input', () => {
         const cleaned = codeInput.value.replace(/\D/g, '').slice(0, 4);
@@ -307,7 +318,7 @@
 
         const code = codeInput.value.trim();
         if (!/^\d{4}$/.test(code)) {
-          showError('Enter all 4 digits.');
+          showError('Enter all 4 digits of your pin.');
           return;
         }
 

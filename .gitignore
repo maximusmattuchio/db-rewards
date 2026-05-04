@@ -3,3 +3,7 @@ node_modules
 .vercel
 .env*.local
 data/codes.csv
+data/backers.csv
+data/labels.pdf
+data/qr/
+

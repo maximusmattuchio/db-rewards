@@ -4,12 +4,16 @@
   "description": "Dirty Bastard — Subscription Rewards Webhook Handler",
   "scripts": {
     "generate-codes": "node scripts/generate-codes.js",
+    "match-backers": "node scripts/match-backers.js",
+    "generate-labels": "node scripts/generate-labels.js",
     "seed": "node scripts/seed.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@supabase/supabase-js": "^2.43.0",
     "nodemailer": "^8.0.3",
+    "pdfkit": "^0.18.0",
+    "qrcode": "^1.5.4",
     "resend": "^6.9.4"
   },
   "devDependencies": {
