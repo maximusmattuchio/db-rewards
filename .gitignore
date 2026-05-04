@@ -6,4 +6,5 @@ data/codes.csv
 data/backers.csv
 data/labels.pdf
 data/qr/
+.DS_Store
 

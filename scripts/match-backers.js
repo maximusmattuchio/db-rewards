@@ -1,17 +1,23 @@
 /**
- * Reads a Kickstarter / ShipStation export, filters backers by order amount,
- * pairs each with a unique 4-digit code, and merges into data/codes.csv.
+ * Syncs backers from a Kickstarter / ShipStation export into data/codes.csv.
  *
- * Idempotent by buyer email — running twice won't double-match the same person.
- * Generates additional codes on the fly if there aren't enough unused.
+ * Behavior:
+ *   - For each backer in the source (matching the amount range), upsert into
+ *     codes.csv. Email is the join key.
+ *   - If a backer already has a code, that code is preserved. Their name is
+ *     updated from the source on every run (so edits in Numbers / the source
+ *     spreadsheet propagate down).
+ *   - If a row in codes.csv has an email that's no longer present in the
+ *     source, its backer_name is blanked out so the label generator skips it.
+ *     The code itself stays — never reassigned.
+ *   - New backers that don't yet have a code get assigned the next unused
+ *     4-digit code (or one is generated on demand).
+ *   - Backer names are passed through a naive title-case so capitalization is
+ *     consistent. Manual edits in codes.csv will be re-overwritten on the
+ *     next sync — make permanent name edits in the source spreadsheet.
  *
  * Usage:
  *   node scripts/match-backers.js [--source path] [--min 25] [--max 55]
- *
- * Defaults:
- *   --source  data/backers.csv
- *   --min     25
- *   --max     55
  */
 
 const fs = require('fs');
@@ -36,7 +42,6 @@ function parseArgs(argv) {
   return args;
 }
 
-// Minimal CSV splitter that handles quoted fields with commas.
 function splitCsvLine(line) {
   const out = [];
   let cur = '';
@@ -64,7 +69,7 @@ function csvCell(value) {
 }
 
 function readCsv(p) {
-  const raw = fs.readFileSync(p, 'utf8').replace(/^﻿/, ''); // strip BOM
+  const raw = fs.readFileSync(p, 'utf8').replace(/^﻿/, '');
   const lines = raw.split(/\r?\n/).filter((l) => l.length > 0);
   if (lines.length === 0) return { header: [], rows: [] };
   const header = splitCsvLine(lines[0]).map((h) => h.trim());
@@ -84,9 +89,8 @@ function parseAmount(raw) {
   return Number.isFinite(v) ? v : NaN;
 }
 
-// Capitalize first letter of each word, lowercase the rest.
-// Imperfect for compound names like "McDonald" / "DeLeire" — manually fix
-// those in data/codes.csv after running.
+// Capitalize first letter of each word, lowercase the rest. Imperfect for
+// "McDonald" / "DeLeire" / "O'Brien" — fix those by hand in the source spreadsheet.
 function titleCase(s) {
   return String(s).toLowerCase().replace(/\b\p{L}+/gu, (w) => w[0].toUpperCase() + w.slice(1));
 }
@@ -107,7 +111,7 @@ function generateCode(used) {
       return c;
     }
   }
-  throw new Error('Exhausted 4-digit code space (very unlikely)');
+  throw new Error('Exhausted 4-digit code space');
 }
 
 async function main() {
@@ -128,18 +132,17 @@ async function main() {
     code: r.code || '',
     backer_name: r.backer_name || '',
     loom_video_url: r.loom_video_url || '',
-    email: r.email || '', // optional column we'll add for idempotency
+    email: (r.email || '').toLowerCase(),
   }));
 
   const usedCodes = new Set(codeRows.map((r) => r.code).filter(Boolean));
-  const matchedEmails = new Set(
-    codeRows.filter((r) => r.email).map((r) => r.email.toLowerCase())
-  );
+  const codeByEmail = new Map();
+  for (const r of codeRows) {
+    if (r.email) codeByEmail.set(r.email, r);
+  }
 
   // ── Load source export ───────────────────────────────────────────────
   const src = readCsv(args.source);
-
-  // Build flexible column lookup so this works with slight header variations.
   const lc = (s) => s.toLowerCase();
   const findCol = (names) => src.header.find((h) => names.includes(lc(h)));
   const colTotal = findCol(['order total', 'amount paid', 'pledge amount']) || 'Order Total';
@@ -147,51 +150,81 @@ async function main() {
   const colEmail = findCol(['buyer email', 'email']) || 'Buyer Email';
 
   // ── Filter by amount range and dedupe by email ───────────────────────
-  const filtered = [];
+  const sourceByEmail = new Map();
+  const sourceWithoutEmail = []; // edge case
+  let outOfRange = 0;
   for (const row of src.rows) {
     const amt = parseAmount(row[colTotal]);
     if (!Number.isFinite(amt)) continue;
-    if (amt < args.min || amt > args.max) continue;
+    if (amt < args.min || amt > args.max) { outOfRange++; continue; }
 
     const name = titleCase((row[colName] || '').trim());
     const email = (row[colEmail] || '').trim().toLowerCase();
     if (!name) continue;
-    if (email && matchedEmails.has(email)) continue; // already matched
-    filtered.push({ name, email, amount: amt });
-    if (email) matchedEmails.add(email);
-  }
 
-  if (filtered.length === 0) {
-    console.log('No new backers to match.');
-    return;
-  }
-
-  // ── Find unused code rows; generate more if needed ───────────────────
-  const unusedRows = codeRows.filter((r) => !r.backer_name);
-  const need = filtered.length - unusedRows.length;
-
-  let appended = 0;
-  if (need > 0) {
-    for (let i = 0; i < need; i++) {
-      const c = generateCode(usedCodes);
-      const newRow = { code: c, backer_name: '', loom_video_url: '', email: '' };
-      codeRows.push(newRow);
-      unusedRows.push(newRow);
-      appended++;
+    if (email) {
+      sourceByEmail.set(email, { name, email, amount: amt });
+    } else {
+      sourceWithoutEmail.push({ name, email: '', amount: amt });
     }
   }
 
-  // ── Assign each filtered backer to the next unused row ───────────────
-  let assigned = 0;
-  for (const b of filtered) {
-    const row = unusedRows.shift();
-    if (!row) break;
-    row.backer_name = b.name;
-    row.email = b.email;
-    assigned++;
+  // ── Sync: update existing rows; blank out removed; add new ───────────
+  let updated = 0;
+  let unchanged = 0;
+  let blanked = 0;
+  let added = 0;
+
+  // Existing rows: update from source or blank out
+  for (const row of codeRows) {
+    if (!row.email) continue; // leave manual rows alone
+    const fromSrc = sourceByEmail.get(row.email);
+    if (fromSrc) {
+      if (row.backer_name !== fromSrc.name) {
+        row.backer_name = fromSrc.name;
+        updated++;
+      } else {
+        unchanged++;
+      }
+      sourceByEmail.delete(row.email); // mark consumed
+    } else {
+      // Backer in codes.csv but no longer in source — blank name to skip
+      if (row.backer_name) {
+        row.backer_name = '';
+        blanked++;
+      }
+    }
   }
 
-  // ── Write updated codes.csv ──────────────────────────────────────────
+  // New backers from source: assign code (reuse blank rows first)
+  const blankRows = codeRows.filter((r) => !r.backer_name && !r.email);
+  let blankIdx = 0;
+
+  for (const backer of sourceByEmail.values()) {
+    let row = blankRows[blankIdx++];
+    if (!row) {
+      const newCode = generateCode(usedCodes);
+      row = { code: newCode, backer_name: '', loom_video_url: '', email: '' };
+      codeRows.push(row);
+    }
+    row.backer_name = backer.name;
+    row.email = backer.email;
+    added++;
+  }
+
+  // Edge case: backers without email — append with a generated code
+  for (const backer of sourceWithoutEmail) {
+    const newCode = generateCode(usedCodes);
+    codeRows.push({
+      code: newCode,
+      backer_name: backer.name,
+      loom_video_url: '',
+      email: '',
+    });
+    added++;
+  }
+
+  // ── Write back ───────────────────────────────────────────────────────
   const headerOut = ['code', 'backer_name', 'loom_video_url', 'email'];
   const lines = [headerOut.join(',')];
   for (const r of codeRows) {
@@ -199,13 +232,15 @@ async function main() {
   }
   fs.writeFileSync(CODES_PATH, lines.join('\n') + '\n');
 
-  console.log(`✓ Source:           ${args.source}`);
-  console.log(`✓ Filter:           $${args.min}–$${args.max} inclusive`);
-  console.log(`✓ Matched backers:  ${assigned}`);
-  if (appended > 0) console.log(`✓ Generated codes:  ${appended} (existing pool was short)`);
-  console.log(`✓ Codes file:       ${CODES_PATH}`);
-  console.log(`✓ Total rows:       ${codeRows.length}`);
-  console.log(`\nNext: record videos, paste Loom URLs into the CSV, then run \`npm run seed\`.`);
+  // ── Report ───────────────────────────────────────────────────────────
+  console.log(`✓ Source:    ${args.source}`);
+  console.log(`✓ Filter:    $${args.min}–$${args.max} inclusive  (${outOfRange} rows skipped)`);
+  console.log(`✓ Updated:   ${updated} (name changed in source)`);
+  console.log(`✓ Unchanged: ${unchanged}`);
+  console.log(`✓ Blanked:   ${blanked} (backer removed from source)`);
+  console.log(`✓ Added:     ${added} (new backer)`);
+  console.log(`✓ Total rows: ${codeRows.length}  (${codeRows.filter((r) => r.backer_name).length} with name, ${codeRows.filter((r) => !r.backer_name).length} blank)`);
+  console.log(`\nNext: review data/codes.csv, then \`npm run generate-labels\`.`);
 }
 
 main().catch((err) => {
