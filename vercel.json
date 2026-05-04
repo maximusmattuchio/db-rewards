@@ -10,6 +10,9 @@
     "api/ai/score.js":       { "maxDuration": 300 },
     "api/ai/customer.js":    { "maxDuration": 30 }
   },
+  "rewrites": [
+    { "source": "/api/redeem", "destination": "/api/health" }
+  ],
   "crons": [
     { "path": "/api/cron/emails",   "schedule": "0 9 * * *"  },
     { "path": "/api/cron/retry",    "schedule": "0 10 * * *" },

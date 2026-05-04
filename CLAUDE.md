@@ -16,7 +16,7 @@ Backer scans a QR code on a paper insert → lands on `unlock.getdirtybastard.co
 
 ### Files
 - `public/index.html` — the entire frontend (vanilla HTML/CSS/JS, brand-styled, mobile-first). Two views toggled via `hidden` class. Submits a fetch to `/api/redeem`.
-- `api/redeem.js` — POST endpoint. Validates 4-digit code, looks up the row, increments `redeem_count`, returns `{ backer_name, loom_embed_url }`.
+- `api/health.js` — combined function. **GET** = original health check (DB connectivity, queue depths, error rate). **POST** = backer redemption (validates 4-digit code, looks up the row, increments `redeem_count`, returns `{ backer_name, loom_embed_url }`). Two unrelated endpoints share one file because the project is at the Hobby-plan 12-function limit. The frontend posts to `/api/redeem`, which `vercel.json` rewrites to `/api/health`. If this gets messy, split it back out and upgrade Vercel to Pro.
 - `lib/loom.js` — converts any Loom share/embed URL to the embed form.
 - `lib/rate-limit.js` — in-memory IP rate limiter (5 attempts / minute / IP). Best-effort on serverless — across cold starts it resets. Good enough for MVP. Swap for Vercel KV / Upstash if abuse appears.
 - `scripts/generate-codes.js` — generates 70 unique 4-digit codes → `data/codes.csv` (gitignored).
