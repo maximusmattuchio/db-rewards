@@ -13,6 +13,9 @@
   "rewrites": [
     { "source": "/api/redeem", "destination": "/api/health" }
   ],
+  "redirects": [
+    { "source": "/:code(\\d{4})", "destination": "/?code=:code", "permanent": false }
+  ],
   "crons": [
     { "path": "/api/cron/emails",   "schedule": "0 9 * * *"  },
     { "path": "/api/cron/retry",    "schedule": "0 10 * * *" },
